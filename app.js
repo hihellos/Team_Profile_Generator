@@ -10,11 +10,11 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-// Use inquirer to gather information about the development team members, and create objects for each team member (using the correct classes as blueprints!)
+// Use inquirer to gather information about team members 
 
 const employeesArr = [];
 
-function promptUser() {
+const promptUser = () => { // getting used to arrow functions
     return inquirer.prompt([
         {
             type: "input",
@@ -55,29 +55,39 @@ function promptUser() {
             name: "school",
             message: "Please enter intern school name: ",
             when: (answer) => answer.role === "Intern"
-        }
+        },
     ]).then(function(content) {
         console.log(content);
+        addEmployee();
+
+        // create objects for each team member (using the correct classes as blueprints!)
     });
 };
 
-promptUser()
-    // .then(function(content) {
-    //     console.log("This is our employee: ", content);
-    // });
+const addEmployee = () => {
+    inquirer.prompt(
+        {
+            type: "confirm",
+            name: "add",
+            message: "Do you want to add another employee? ",
+        }
+    ).then(function(answer) {
+        if (answer.add === true) {
+            promptUser();
+        }
+        else {
+            fs.writeFile(outputPath, render(employeesArr), function(err) {
+                if (err) {
+                    return console.log(err);
+                }
+                console.log("Successfully added employees to team!");
+            })
+        }
+    })
+}
 
-// .then(function(managerAnswer) {
-//     const addManager = new Manager(
-//         answers.name, 
-//         answers.id, 
-//         answers.email, 
-//         managerAnswer.officeNumber);
+promptUser();
 
-//     employeesArr.push(addManager);
-//     addEmployee();
-// })
-
-// const addEmployee = () =>
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will generate and return a block of HTML including templated divs for each employee!
@@ -85,15 +95,5 @@ promptUser()
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
 // `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// Manager: Enter your ID number: Enter your email: Enter your office number:
-// Engineer: What is this engineer's name: What is this engineer's id: What is this engineer's email: What is this engineer's github username:
-// Intern: What is this intern's name: What is this intern's id: What is this intern's email: What is this intern's school:
 
 // HINT: make sure to build out your classes first! Remember that your Manager, Engineer, and Intern classes should all extend from a class named Employee; see the directions for further information. Be sure to test out each class and verify it generates an object with the correct structure and methods. This structure will be crucial in order for the provided `render` function to work! ```
