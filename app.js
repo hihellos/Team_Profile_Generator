@@ -34,7 +34,7 @@ const promptUser = () => { // getting used to arrow functions
         {
             type: "list",
             name: "role",
-            message: "Please select content employee's role: ",
+            message: "Please select this employee's role: ",
             choices: ["Manager", "Engineer", "Intern"]
         },
         // depending on role selected, continue prompts respective of selection 
