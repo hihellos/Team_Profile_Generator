@@ -12,7 +12,7 @@ const render = require("./lib/htmlRenderer");
 
 // Use inquirer to gather information about team members 
 
-const employeesArr = [];
+const employees = [];
 
 const promptUser = () => { // getting used to arrow functions
     return inquirer.prompt([
@@ -34,7 +34,7 @@ const promptUser = () => { // getting used to arrow functions
         {
             type: "list",
             name: "role",
-            message: "Please select this employee's role: ",
+            message: "Please select content employee's role: ",
             choices: ["Manager", "Engineer", "Intern"]
         },
         // depending on role selected, continue prompts respective of selection 
@@ -59,10 +59,40 @@ const promptUser = () => { // getting used to arrow functions
     ]).then(function(content) {
         console.log(content);
         addEmployee();
-
         // create objects for each team member (using the correct classes as blueprints!)
+
+        switch(content.role) {
+            case "Manager":
+                const addManager = new Manager(
+                    content.name,
+                    content.id,
+                    content.email,
+                    content.officeNumber,
+                )
+                employees.push(addManager);
+            break;
+            case "Engineer":
+                const addEngineer = new Engineer(
+                    content.name,
+                    content.id,
+                    content.email,
+                    content.github,
+                )
+                employees.push(addEngineer);
+            break;
+            case "Intern":
+                const addIntern = new Intern(
+                    content.name,
+                    content.id,
+                    content.email,
+                    content.school,
+                )
+                employees.push(addIntern);
+            break;
+        }
     });
 };
+
 
 const addEmployee = () => {
     inquirer.prompt(
@@ -76,11 +106,12 @@ const addEmployee = () => {
             promptUser();
         }
         else {
-            fs.writeFile(outputPath, render(employeesArr), function(err) {
+            fs.writeFile(outputPath, render(employees), function(err) {
                 if (err) {
                     return console.log(err);
                 }
                 console.log("Successfully added employees to team!");
+                console.log("Our team: ", employees);
             })
         }
     })
@@ -94,6 +125,6 @@ promptUser();
 
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
+// `output` folder. You can use the variable `outputPath` above target content location.
 
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer, and Intern classes should all extend from a class named Employee; see the directions for further information. Be sure to test out each class and verify it generates an object with the correct structure and methods. This structure will be crucial in order for the provided `render` function to work! ```
+// HINT: make sure to build out your classes first! Remember that your Manager, Engineer, and Intern classes should all extend from a class named Employee; see the directions for further information. Be sure to test out each class and verify it generates an object with the correct structure and methods. content structure will be crucial in order for the provided `render` function to work! ```
