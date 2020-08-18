@@ -93,7 +93,6 @@ const promptUser = () => { // getting used to arrow functions
     });
 };
 
-
 const addEmployee = () => {
     inquirer.prompt(
         {
@@ -105,6 +104,7 @@ const addEmployee = () => {
         if (answer.add === true) {
             promptUser();
         }
+        // After the user has input all employees desired, call the `render` function (required above) and pass in an array containing all employee objects
         else {
             fs.writeFile(outputPath, render(employees), function(err) {
                 if (err) {
@@ -118,13 +118,3 @@ const addEmployee = () => {
 }
 
 promptUser();
-
-
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target content location.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer, and Intern classes should all extend from a class named Employee; see the directions for further information. Be sure to test out each class and verify it generates an object with the correct structure and methods. content structure will be crucial in order for the provided `render` function to work! ```
