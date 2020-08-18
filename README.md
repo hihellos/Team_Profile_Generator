@@ -36,7 +36,7 @@ Powered by:
 
 `node app.js`
 
-## Contributing :handshaking: <a name="contribute"></a>
+## Contributing :v: <a name="contribute"></a>
 
 Feel free to fork this repository, and open a pull request to suggest changes. 
 
